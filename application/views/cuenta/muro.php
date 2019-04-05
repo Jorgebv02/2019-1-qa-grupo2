@@ -1,6 +1,7 @@
-
-      <div class="feed-content">
+<div class="feed-content" style="width: 60%;">
+    
     <div class="recentcontainer">
+        <?= form_open('muro/publicar'); ?>
         <ul class="newpostheader nav nav-tabs nav-justified">
             <li>
                 <a href="javascript:void(0)">
@@ -10,86 +11,108 @@
             </li>
         </ul>
         <div class="newpost">
-            <textarea placeholder="En que estas pensando..."></textarea>
+            <textarea placeholder="En que estas pensando..." name="descripcion_post"></textarea>
         </div>
         <table class="table newpostfooter">
             <tr>
                 <td style="width: 85%;">
-                    <input class="input-tags" name="tags"  id="input-tags" placeholder="TAGS" >
+                    <input class="input-tags" name="tags_post" id="input-tags" placeholder="Digite un tag y precione enter" >
                 </td>
                 <td style="width: 15%;">
-                    <select class="form-control" style="height: 35px;">
+                    <select class="form-control" style="height: 35px;" name="tipo_post">
                         <option value="1">Público</option>
-                        <option value="1">Privado</option>
+                        <option value="2">Privado</option>
                     </select>
                 </td>
                 <td style="width: 15%;">
                     <center>
-                        <a href="#" class="btn btn-success" style="height: 35px;">Publicar</a>
+                        <?=form_submit("Publicar",'Publicar', "class='btn btn-success' style='height: 35px;' "); ?>
                     </center>
                 </td>
             </tr>
         </table>
+        <?=form_close(); ?>
     </div>
-          
-          
 
-           <?php for($x=0;$x<10;$x++){ ?>
-    <div class="recentcontainer">
+<?php 
+    if (empty($this->muro_m->get_post()) and $this->input->post('buscar') == ''){
+        echo "<center><h2>Haz amigos primero!</h2></center>";
+    }else if (empty($this->muro_m->get_post()) and $this->input->post('buscar') != ''){
+        echo "<center><h2>Sin Resultados :(</h2></center>";
+    }else {
+        foreach($this->muro_m->get_post() as $row){ ?>
+    <div class="recentcontainer" id="<?=$row->id_post;?>">
         <div class="newpostheader">
-        <a href="javascript:void(0)"><img src="//i.imgur.com/5jInimY.jpg" /><span class="name">Jose Ceciliano</span></a>
-            <p><a class="date" href="#">44 mins</a> <i class="fa fa-globe"></i></p>
+            <center>
+                <span class="name"><h3><?= $row->nombre; ?></h3></span>
+                <a class="date">Hace <?= $this->muro_m->tiempo($row->fecha); ?></a> - <?= $row->tipo; ?>
+                </center>
         </div>
-        <div class="newpost">
-            <div class="postcontent">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate sunt quasi in quam asperiores! Optio voluptate impedit eos ex nisi, molestias facilis sint cupiditate, dolores veritatis cum? Enim vel, qui!
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate sunt quasi in quam asperiores! Optio voluptate impedit eos ex nisi, molestias facilis sint cupiditate, dolores veritatis cum? Enim vel, qui!
-            </div>
+        <div class="postcontent">
+            <h2> <?= $row->descripcion; ?></h2>
+            <h4> <?= $this->muro_m->tags_format($row->tags); ?></h4>
         </div>
-        <ul class="newpostfooter nav nav-tabs nav-justified">
+        <div class="commentpost" style="padding: 1%;">
+            <br>
             <table style='width: 100%;'>
                 <tr>
                     <td> 
-                        <center>(0) <i class="fa fa-thumbs-up" style="color:#3B5998;"></i></center>
-                        
+                        <center>
+                            <a data-toggle="collapse" href="#likes_post_<?=$row->id_post;?>" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                (<?= $this->muro_m->likes_total($row->id_post) ?>)
+                            </a>
+                            <?= $this->muro_m->boton_like($row->id_post) ?>
+                        </center>
+                        <div class="collapse" id="likes_post_<?=$row->id_post;?>">
+                        <?php 
+                            foreach($this->muro_m->get_likes($row->id_post) as $likes){ 
+                                echo "- ".$likes->nombre."<br>";
+                            } 
+                        ?>
+                        </div>
                     </td>
                     <td> 
-                        <center>(0) <i class="fa fa-comments" style="color:#FF0000;"></i></center>
-                        
+                        <center>(<?= $this->muro_m->comentarios_total($row->id_post) ?>) <i class="fa fa-comments" style="color:#FF0000;"></i> Comentarios </center>
                     </td>
                 </tr>
             </table>
-        </ul>
-        <ul class="newpostfooter nav nav-tabs nav-justified">
-            <li>
-                <a href="#"><i class="fa fa-thumbs-up"></i><span>Like</span></a> 
-            </li>
-            <li>
-                <a href="#" title="Leave a comment"><i class="fa fa-comment-o"></i><span>Comentar</span></a>
-            </li>
-        </ul>
-        <div class="commentpost">
-            <div class="input-group">
-                <a href="#"><img src="//i.imgur.com/5jInimY.jpg"  style='margin-top: 40%;margin-left: 10%;'/></a>
-                <table style="width: 88%;">
+            <hr>
+
+            <?php foreach($this->muro_m->get_comentario($row->id_post) as $comentarios){ ?>
+            <table style="padding: 1%;">
                     <tr>
-                        <td><textarea class="form-control" placeholder="Write a comment..." style="width: 100%; height: 60px;"></textarea></td>
-                    </tr>
-                    <tr>
-                        <td><input class=" input-tags"  id="input-tags" name="tags" placeholder="TAGS" style="width: 100%;"></td>
+                        <td>
+                            <b><?= $comentarios->nombre; ?></b> <?= $comentarios->comentario; ?> - <?= $this->muro_m->tags_format($comentarios->tags); ?> <br> 
+                            Hace <?= $this->muro_m->tiempo($comentarios->fecha) ?>
+                        </td>
                     </tr>
                 </table>
-              
-               
+            <hr>
+            <?php } ?>
+            <div class="input-group">
+                <?= form_open('muro/comentar'); ?>
+                <table style="width: 100%;">
+                    <tr>
+                        <td colspan="2">
+                            <textarea class="form-control" name="comentario" placeholder="Escribir un comentario..." style="width: 100%; height: 60px;" required></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 88%;">
+                            <input class="input-tags"  id="input-tags" name="tags_comentario" placeholder="Digite un tag y precione enter" style="width: 100%;">
+                            <input  name="id_post" value="<?= $row->id_post; ?>" style="display:none;">
+                        </td>
+                        <td>
+                            <center><?=form_submit("Publicar",'Publicar', "class='btn btn-success' style='height: 35px;' "); ?></center>
+                        </td>
+                    </tr>
+                </table>
+                 <?=form_close(); ?>
             </div>
         </div>
     </div> 
-           <?php } ?>
-          
-          
-          
+    <?php } }  ?>
 </div>
-
 
 <div class="right-content">
     <div class="section-content">
@@ -97,48 +120,23 @@
       Personas<br>
     </h2>
     <ul>
-        <?php for($x=0;$x<10;$x++){ ?>
-        <li>
-            <a href="javascript:void(0)">
-                <img src="https://i.imgur.com/5jInimY.jpg" align="left"> <b>Silvia Calderon</b>
-                <a href="#" class="btn btn-info" style='right: 10px;position: inherit;' >Hacer Amigos</a>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:void(0)">
-                <img src="https://i.imgur.com/5jInimY.jpg" align="left"> 
-                <b>Ana Rojas</b><a href="#" class="btn btn-danger" style='left: 12%;position: relative;' >Eliminar Amigo</a>
-            </a>
-        </li>
-        <?php } ?>
+        <?php 
+        $amigos = json_decode($this->muro_m->get_lista_amigos()[0]->amigos);
+        if($amigos == ""){
+            $amigos = array();
+        }
+         foreach($this->muro_m->get_usuarios() as $row){
+             echo ' <li>
+            <a href="">
+                <h4><b>'.$row->nombre.'</b></h4><br>'; 
+                if (!in_array($row->id_usuario, $amigos)){
+                    echo '<center><a href="muro/hacer_amigo/'.$row->id_usuario.'" class="btn btn-info" style="position: inherit;" >Hacer Amigos</a></center>';
+                }else{
+                    echo '<center><a href="muro/eliminar_amigo/'.$row->id_usuario.'" class="btn btn-danger" style=";position: relative;" >Eliminar Amigo</a></center>';
+                }
+            echo '</a></li>';
+            } ?>
     </ul>
     </div>
 </div>
 
-
-
-
-<div class="left-content">
-    <div class="section-content">
-     <h2>
-      Actividad<br>
-    </h2>
-    <ul>
-        <?php for($x=0;$x<10;$x++){ ?>
-        <li>
-            <a href="javascript:void(0)">
-                <img src="https://i.imgur.com/5jInimY.jpg" align="left"> <b>Silvia Calderon</b>
-            </a>
-            <span>Publico hace 40min</span>
-        </li>
-        <li>
-            <a href="javascript:void(0)">
-                <img src="https://i.imgur.com/5jInimY.jpg" align="left"> <b>Ana Rojas</b>
-            </a>
-            <span>Comento hace 40min</span>
-        </li>
-        
-        <?php } ?>
-    </ul>
-    </div>
-</div>

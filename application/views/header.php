@@ -1,5 +1,5 @@
 <?php $data_email = array(
-            array('type' => 'email','name' => 'email','class' => ' form-control','placeholder' => 'Usuario'),
+            array('type' => 'text','name' => 'usuario','class' => ' form-control','placeholder' => 'Usuario'),
             array('type' => 'password','name' => 'password','class' => 'form-control','placeholder' => 'Contraseña')
             );
 ?>
