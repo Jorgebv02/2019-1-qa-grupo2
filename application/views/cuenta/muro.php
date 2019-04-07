@@ -16,7 +16,7 @@
         <table class="table newpostfooter">
             <tr>
                 <td style="width: 85%;">
-                    <input class="input-tags" name="tags_post" id="input-tags" placeholder="Digite un tag y precione enter" >
+                    <input class="input-tags" name="tags_post" id="input-tags" placeholder="Digite un tag y presione enter" >
                 </td>
                 <td style="width: 15%;">
                     <select class="form-control" style="height: 35px;" name="tipo_post">
@@ -36,7 +36,7 @@
 
 <?php 
     if (empty($this->muro_m->get_post()) and $this->input->post('buscar') == ''){
-        echo "<center><h2>Haz amigos primero!</h2></center>";
+        echo "<center><h2>¡Haz amigos primero!</h2></center>";
     }else if (empty($this->muro_m->get_post()) and $this->input->post('buscar') != ''){
         echo "<center><h2>Sin Resultados :(</h2></center>";
     }else {
