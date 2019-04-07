@@ -49,7 +49,9 @@
                 </center>
         </div>
         <div class="postcontent">
-            <h2> <?= $row->descripcion; ?></h2>
+            <h2> <?= parse_smileys( $row->descripcion, base_url().'dist/smileys'); ?></h2>
+            
+            
             <h4> <?= $this->muro_m->tags_format($row->tags); ?></h4>
         </div>
         <div class="commentpost" style="padding: 1%;">
@@ -82,7 +84,7 @@
             <table style="padding: 1%;">
                     <tr>
                         <td>
-                            <b><?= $comentarios->nombre; ?></b> <?= $comentarios->comentario; ?> - <?= $this->muro_m->tags_format($comentarios->tags); ?> <br> 
+                            <b><?= $comentarios->nombre; ?></b> <?= parse_smileys( $comentarios->comentario, base_url().'dist/smileys'); ?> - <?= $this->muro_m->tags_format($comentarios->tags); ?> <br> 
                             Hace <?= $this->muro_m->tiempo($comentarios->fecha) ?>
                         </td>
                     </tr>
