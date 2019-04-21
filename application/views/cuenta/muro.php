@@ -173,7 +173,7 @@
                     <tr>
                         <td style="width: 88%;">
                             
-                            <input class="input-tags"  id="input-tags" name="tags_comentario" placeholder="Digite un tag y precione enter" style="width: 100%;">
+                            <input class="input-tags"  id="input-tags" name="tags_comentario" placeholder="Digite un tag y presione enter" style="width: 100%;">
                             <input  name="id_post" value="<?= $row->id_post; ?>" style="display:none;">
                             <?php if(isset($_GET['id'])){
                                 $id_parent = $_GET['id'];
