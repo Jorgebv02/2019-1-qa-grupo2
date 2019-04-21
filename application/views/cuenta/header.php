@@ -24,13 +24,13 @@
         <div class="search-box">
             <div class="input-group">
                  <?= form_open('muro'); ?>
-                    <input aria-describedby="basic-addon2" name="buscar" class="form-control" placeholder="Buscar Face-Tec" type="text"  <?php if($this->input->post('buscar') != ''){echo 'value="'.$this->input->post('buscar').'"'; }?>/>
+                    <input aria-describedby="basic-addon2" name="buscar" class="form-control" placeholder="Buscar en Face-Tec" type="text"  <?php if($this->input->post('buscar') != ''){echo 'value="'.$this->input->post('buscar').'"'; }?>/>
                 <?=form_close(); ?>
             </div>
         </div>
         <div class="right-group">
             <div class="link-group">
-                <a href="<?php echo base_url(); ?>index.php/muro"> <i class="fa fa-user"></i> <?= $this->muro_m->get_nombre(); ?></a>
+                <a href="<?php echo base_url(); ?>index.php/muro">  <?= $this->muro_m->get_img_perfil($_SESSION['usuario'],50,50); ?> <i class="fa fa-user"></i> <?= $this->muro_m->get_nombre(); ?></a>
             </div>
             <div class="notification-group">
                 <div class="link-group">
